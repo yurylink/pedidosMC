@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.yurylink.pedidos.domain.Categoria;
-import br.com.yurylink.pedidos.repositories.services.CategoriaServices;
+import br.com.yurylink.pedidos.repositories.exception.ObjectNotFoundException;
+import br.com.yurylink.pedidos.services.CategoriaServices;
 
 @RestController
 @RequestMapping(value="/categorias")
@@ -18,7 +19,7 @@ public class CategoriaResources {
 	private CategoriaServices categoriaService;
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
-	public ResponseEntity<?> buscarById(@PathVariable Integer id) {
+	public ResponseEntity<?> buscarById(@PathVariable Integer id) throws ObjectNotFoundException {
 		Categoria cat = categoriaService.buscar(id);
 		return ResponseEntity.ok().body(cat);
 	}

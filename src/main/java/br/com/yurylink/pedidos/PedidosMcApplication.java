@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import br.com.yurylink.pedidos.domain.Categoria;
 import br.com.yurylink.pedidos.domain.Produto;
 import br.com.yurylink.pedidos.repositories.ProdutoRepository;
-import br.com.yurylink.pedidos.repositories.services.CategoriaServices;
+import br.com.yurylink.pedidos.services.CategoriaServices;
 
 @SpringBootApplication
 public class PedidosMcApplication implements CommandLineRunner{
