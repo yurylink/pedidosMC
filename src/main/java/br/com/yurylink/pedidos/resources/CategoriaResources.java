@@ -1,8 +1,5 @@
 package br.com.yurylink.pedidos.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,20 +16,6 @@ public class CategoriaResources {
 	
 	@Autowired
 	private CategoriaServices categoriaService;
-	
-	
-	@RequestMapping(value="/all",method=RequestMethod.GET)
-	public List<Categoria> listar() {
-		
-		Categoria cat1 = new Categoria(1, "Informatica");
-		Categoria cat2 = new Categoria(2, "Escritorio");
-		
-		List<Categoria> listaCategoria = new ArrayList<Categoria>();
-		listaCategoria.add(cat1);
-		listaCategoria.add(cat2);
-		
-		return listaCategoria;
-	}
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public ResponseEntity<?> buscarById(@PathVariable Integer id) {
