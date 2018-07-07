@@ -1,7 +1,9 @@
 package br.com.yurylink.pedidos;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +16,19 @@ import br.com.yurylink.pedidos.domain.Cidade;
 import br.com.yurylink.pedidos.domain.Cliente;
 import br.com.yurylink.pedidos.domain.Endereco;
 import br.com.yurylink.pedidos.domain.Estado;
+import br.com.yurylink.pedidos.domain.Pagamento;
+import br.com.yurylink.pedidos.domain.PagamentoBoleto;
+import br.com.yurylink.pedidos.domain.PagamentoCartao;
+import br.com.yurylink.pedidos.domain.Pedido;
 import br.com.yurylink.pedidos.domain.Produto;
+import br.com.yurylink.pedidos.enums.EstadoPagamentoEnum;
 import br.com.yurylink.pedidos.enums.TipoPessoa;
 import br.com.yurylink.pedidos.repositories.CidadeRepository;
 import br.com.yurylink.pedidos.repositories.ClienteRepository;
 import br.com.yurylink.pedidos.repositories.EnderecoRepository;
 import br.com.yurylink.pedidos.repositories.EstadoRepository;
+import br.com.yurylink.pedidos.repositories.PagamentoRepository;
+import br.com.yurylink.pedidos.repositories.PedidoRepository;
 import br.com.yurylink.pedidos.repositories.ProdutoRepository;
 import br.com.yurylink.pedidos.services.CategoriaServices;
 
@@ -43,6 +52,12 @@ public class PedidosMcApplication implements CommandLineRunner{
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(PedidosMcApplication.class, args);
@@ -103,6 +118,26 @@ public class PedidosMcApplication implements CommandLineRunner{
 		clienteRepository.saveAll(Arrays.asList(c1,c2,c3));
 		enderecoRepository.saveAll(Arrays.asList(e1,e2,e3));
 		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Pedido ped1 = new Pedido(null,new Date(), c1, e1);
+		Pedido ped2 = new Pedido(null,new Date(), c1, e2);
+		Pedido ped3 = new Pedido(null,new Date(), c2, e3);
+		
+		Pagamento pagamentoCartao = new PagamentoCartao(null, EstadoPagamentoEnum.PAGO, ped1, 5);
+		ped1.setPagameto(pagamentoCartao);
+		
+		Pagamento pagamentoCartao2 = new PagamentoCartao(null, EstadoPagamentoEnum.PAGO, ped2, 5);
+		ped2.setPagameto(pagamentoCartao2);
+		
+		Pagamento pagamentoBoleto = new PagamentoBoleto(null, EstadoPagamentoEnum.PENDENTE, ped3, sdf.parse("10/10/2018 22:00"), sdf.parse("12/10/2018 12:05"));
+		ped3.setPagameto(pagamentoBoleto);
+		
+		c1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+		c2.getPedidos().addAll(Arrays.asList(ped3));
+		
+		pedidoRepository.saveAll(Arrays.asList(ped1,ped2,ped3));
+		pagamentoRepository.saveAll(Arrays.asList(pagamentoBoleto, pagamentoCartao, pagamentoCartao2));
 	}
 	
 }
