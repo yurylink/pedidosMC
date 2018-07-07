@@ -11,9 +11,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.yurylink.pedidos.domain.Categoria;
 import br.com.yurylink.pedidos.domain.Cidade;
+import br.com.yurylink.pedidos.domain.Cliente;
+import br.com.yurylink.pedidos.domain.Endereco;
 import br.com.yurylink.pedidos.domain.Estado;
 import br.com.yurylink.pedidos.domain.Produto;
+import br.com.yurylink.pedidos.enums.TipoPessoa;
 import br.com.yurylink.pedidos.repositories.CidadeRepository;
+import br.com.yurylink.pedidos.repositories.ClienteRepository;
+import br.com.yurylink.pedidos.repositories.EnderecoRepository;
 import br.com.yurylink.pedidos.repositories.EstadoRepository;
 import br.com.yurylink.pedidos.repositories.ProdutoRepository;
 import br.com.yurylink.pedidos.services.CategoriaServices;
@@ -32,6 +37,12 @@ public class PedidosMcApplication implements CommandLineRunner{
 	
 	@Autowired
 	private EstadoRepository estadoRepository;
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(PedidosMcApplication.class, args);
@@ -75,6 +86,23 @@ public class PedidosMcApplication implements CommandLineRunner{
 		cidadeRepository.saveAll(Arrays.asList(cidAsaSul, cidCeilandia, cidGoiania));
 		categoriaService.saveAll(listaCategoria);
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
+		
+		Cliente c1 = new Cliente(null, "Adilson", "02340080030", TipoPessoa.FISICA);
+		c1.getListaTelefone().addAll(Arrays.asList("999998877","9988771123"));
+		Cliente c2 = new Cliente(null, "Beto", "12345678910", TipoPessoa.FISICA);
+		c2.getListaTelefone().addAll(Arrays.asList("999998877","9988771123"));
+		Cliente c3 = new Cliente(null, "Clara Ltda", "1234567891045", TipoPessoa.JURIDICA);
+		c3.getListaTelefone().addAll(Arrays.asList("999998877","9988771123"));
+		
+		Endereco e1 = new Endereco(null, "QNM", "", "Ceilandia", "72210241", c1, cidCeilandia);
+		Endereco e2 = new Endereco(null, "SCS", "", "Brasilia", "74236514", c1, cidAsaSul);
+		Endereco e3 = new Endereco(null, "CasadaPrima", "", "Goias", "74236514", c3, cidGoiania);
+		
+		c1.setEndereco(Arrays.asList(e1,e2));
+		
+		clienteRepository.saveAll(Arrays.asList(c1,c2,c3));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2,e3));
+		
 	}
 	
 }
