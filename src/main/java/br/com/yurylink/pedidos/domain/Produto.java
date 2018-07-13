@@ -2,7 +2,9 @@ package br.com.yurylink.pedidos.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -24,6 +26,9 @@ public class Produto implements Serializable{
 	private String produto;
 	private Double preco;
 	
+	private Set<ItemPedido> items = new HashSet<>();
+
+	
 	@ManyToMany
 	@JoinTable(name="PRODUTO_CATEGORIA",
 			   joinColumns = @JoinColumn(name = "produto_id"),
@@ -41,6 +46,15 @@ public class Produto implements Serializable{
 		this.id = id;
 		this.produto = produto;
 		this.preco = preco;
+	}
+	
+	public List<Pedido> getPedidos(){
+		List<Pedido> listaPedido = new ArrayList<>();
+		for (ItemPedido itemPedido : items) {
+			listaPedido.add(itemPedido.getPedido());
+		}
+		
+		return listaPedido;
 	}
 
 	public Integer getId() {
