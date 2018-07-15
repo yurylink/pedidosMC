@@ -16,6 +16,7 @@ import br.com.yurylink.pedidos.domain.Cidade;
 import br.com.yurylink.pedidos.domain.Cliente;
 import br.com.yurylink.pedidos.domain.Endereco;
 import br.com.yurylink.pedidos.domain.Estado;
+import br.com.yurylink.pedidos.domain.ItemPedido;
 import br.com.yurylink.pedidos.domain.Pagamento;
 import br.com.yurylink.pedidos.domain.PagamentoBoleto;
 import br.com.yurylink.pedidos.domain.PagamentoCartao;
@@ -27,6 +28,7 @@ import br.com.yurylink.pedidos.repositories.CidadeRepository;
 import br.com.yurylink.pedidos.repositories.ClienteRepository;
 import br.com.yurylink.pedidos.repositories.EnderecoRepository;
 import br.com.yurylink.pedidos.repositories.EstadoRepository;
+import br.com.yurylink.pedidos.repositories.ItemPedidoRepository;
 import br.com.yurylink.pedidos.repositories.PagamentoRepository;
 import br.com.yurylink.pedidos.repositories.PedidoRepository;
 import br.com.yurylink.pedidos.repositories.ProdutoRepository;
@@ -58,6 +60,9 @@ public class PedidosMcApplication implements CommandLineRunner{
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(PedidosMcApplication.class, args);
@@ -138,6 +143,17 @@ public class PedidosMcApplication implements CommandLineRunner{
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2,ped3));
 		pagamentoRepository.saveAll(Arrays.asList(pagamentoBoleto, pagamentoCartao, pagamentoCartao2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.0, 2, 4000.00);
+		ItemPedido ip2 = new ItemPedido(ped2, p2, 0.0, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p3, 100.0, 1, 100.00);
+		ItemPedido ip4 = new ItemPedido(ped3, p2,0.0, 1, 100.0);
+		
+		ped1.getItems().add(ip1);
+		ped2.getItems().addAll(Arrays.asList(ip2,ip3));
+		ped3.getItems().add(ip4);
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3,ip4));
 	}
 	
 }

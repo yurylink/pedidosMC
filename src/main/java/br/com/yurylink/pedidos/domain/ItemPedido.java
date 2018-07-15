@@ -2,6 +2,7 @@ package br.com.yurylink.pedidos.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -10,11 +11,14 @@ public class ItemPedido implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@EmbeddedId
 	private ItemPedidoPk id = new ItemPedidoPk();
 	
 	private Double desconto;
 	private Integer quantidade;
 	private Double preco;
+	
+	public ItemPedido() {}
 	
 	public ItemPedido(Pedido pedido, Produto produto, Double desconto, Integer quantidade, Double preco) {
 		super();
