@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import br.com.yurylink.pedidos.domain.Categoria;
@@ -24,6 +25,11 @@ public class CategoriaServices {
 	
 	public void saveAll(List<Categoria> listaCategoria) {
 		categoriaRepository.saveAll(listaCategoria);
+	}
+
+	public Categoria save(Categoria obj) {
+		obj.setId(null);
+		return categoriaRepository.save(obj);
 	}
 	
 }
